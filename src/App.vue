@@ -3,5 +3,5 @@
 </script>
 
 <style lang="scss">
-@import url('styles/main.scss');
+@import './styles/main.css';
 </style>

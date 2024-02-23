@@ -2,24 +2,20 @@
 const list = reactive([{
   title: '我要开发票',
   sub: '去开发票',
-  link: '/pages/invoiceList'
-},
-  {
-    title: '我的发票',
-    sub: '已开/未开发票',
-    link: '/pages/invoiceList'
-  },
-  {
-    title: '抬头发票',
-    sub: '编辑信息',
-    link: '/pages/invoiceList'
-  },
-  {
-    title: '常见问题',
-    sub: '答疑解惑',
-    link: '/pages/invoiceList'
-  },
-])
+  link: '/pages/invoiceList',
+}, {
+  title: '我的发票',
+  sub: '已开/未开发票',
+  link: '/pages/invoiceList',
+}, {
+  title: '抬头发票',
+  sub: '编辑信息',
+  link: '/pages/lookUp',
+}, {
+  title: '常见问题',
+  sub: '答疑解惑',
+  link: '/pages/invoiceList',
+}])
 
 function handlerItem(row) {
   router.push(row.link)
@@ -28,46 +24,66 @@ function handlerItem(row) {
 
 <!-- 本示例未包含完整css，获取外链css请参考上文，在hello uni-app项目中查看 -->
 <template>
-  <view class="boxContainer">
+  <view class="boxContainer pt-1px">
     <view class="uni-margin-wrap">
       <swiper class="swiper">
         <swiper-item>
-          <view class="swiper-item uni-bg-red">A</view>
+          <view class="swiper-item uni-bg-red">
+            A
+          </view>
         </swiper-item>
         <swiper-item>
-          <view class="swiper-item uni-bg-green">B</view>
+          <view class="swiper-item uni-bg-green">
+            B
+          </view>
         </swiper-item>
         <swiper-item>
-          <view class="swiper-item uni-bg-blue">C</view>
+          <view class="swiper-item uni-bg-blue">
+            C
+          </view>
         </swiper-item>
       </swiper>
     </view>
 
     <view class="titleMax">
-      <view class="t1">发票服务</view>
-      <view class="t2">银联云闪付用户开票 ></view>
+      <view class="t1">
+        发票服务
+      </view>
+      <view class="t2" @click="router.push('/pages/unionPay')">
+        银联云闪付用户开票 >
+      </view>
     </view>
 
     <view class="listBox">
-      <view class="item" v-for="(item, index) in list" :key="index" @click="handlerItem(item)">
+      <view v-for="(item, index) in list" :key="index" class="item" @click="handlerItem(item)">
         <view class="box">
-          <view class="t1">{{ item.title }}</view>
-          <view class="t2">{{ item.sub }}</view>
+          <view class="t1">
+            {{ item.title }}
+          </view>
+          <view class="t2">
+            {{ item.sub }}
+          </view>
         </view>
-        <view class="icon"></view>
+        <view class="icon" />
       </view>
     </view>
 
     <view class="titleMax">
-      <view class="t1">自助服务</view>
+      <view class="t1">
+        自助服务
+      </view>
     </view>
 
     <view class="server">
       <view class="text">
-        <view class="title">自助服务</view>
-        <view class="sub">快速解决您的发票问题烦恼~</view>
+        <view class="title">
+          自助服务
+        </view>
+        <view class="sub">
+          快速解决您的发票问题烦恼~
+        </view>
       </view>
-      <view class="icon"></view>
+      <view class="icon" />
     </view>
   </view>
 </template>

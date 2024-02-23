@@ -1,36 +1,45 @@
-<template>
-	<view class="container">
-		<view class="topFixed">
-			<view v-for="(item, i) in tab.nav" :key="item.key" @click="tab.handler(item)" class="item" :class="{'active': item.key === tab.active, [`item-${i}`]: true }">
-				{{ item.text }}
-			</view>
-		</view>
-
-		<view class="emitContainer" v-if="list.length === 0">
-			<div class="box">
-				<image src="../../static/empty.svg" style="width: 500rpx;height: 500rpx;margin:auto;display: block;margin-bottom: -40rpx;" mode=""></image>
-				<p class="p p1">找不到可开票记录？点击试试用订单搜索</p>
-				<p class="p p1">试试扫描二维码</p>
-				<p class="p p1">试试输入序列号</p>
-			</div>
-		</view>
-	</view>
-</template>
-
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref } from 'vue'
+
 const tab = reactive({
-	nav: [
-		{ text: '未开票账单', key: 'no' },
-		{ text: '已开票账单', key: 'yes' },
-	],
-	active: 'no',
-  handler: row => tab.active = row.key
+  nav: [
+    { text: '未开票账单', key: 'no' },
+    { text: '已开票账单', key: 'yes' },
+  ],
+  active: 'no',
+  handler: row => tab.active = row.key,
 })
 
 const list = ref([])
-
+function goScan() {
+  router.push('/pages/scanCode')
+}
 </script>
+
+<template>
+  <view class="container">
+    <view class="topFixed">
+      <view v-for="(item, i) in tab.nav" :key="item.key" class="item" :class="{ active: item.key === tab.active, [`item-${i}`]: true }" @click="tab.handler(item)">
+        {{ item.text }}
+      </view>
+    </view>
+
+    <view v-if="list.length === 0" class="emitContainer">
+      <div class="box">
+        <image src="../../static/empty.svg" style="width: 500rpx;height: 500rpx;margin:auto;display: block;margin-bottom: -40rpx;" mode="" />
+        <p class="p p1" @click="router.push('/pages/merchant')">
+          找不到可开票记录？点击试试用订单搜索
+        </p>
+        <p class="p p1" @click="goScan">
+          试试扫描二维码
+        </p>
+        <p class="p p1">
+          试试输入序列号
+        </p>
+      </div>
+    </view>
+  </view>
+</template>
 
 <style lang="scss" scoped>
 .container{

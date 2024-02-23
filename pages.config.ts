@@ -1,9 +1,28 @@
 import { defineUniPages } from '@uni-helper/vite-plugin-uni-pages'
 
 export default defineUniPages({
-  pages: [],
+  pages: [
+    {
+      path: 'pages/invoiceList',
+      style: {
+        navigationBarBackgroundColor: '#fff',
+      },
+    },
+    {
+      path: 'pages/issue/index',
+      style: {
+        navigationBarTitleText: '常见问题',
+      },
+    },
+    {
+      path: 'pages/issue/detail',
+      style: {
+        navigationBarTitleText: '常见问题',
+      },
+    },
+  ],
   globalStyle: {
-    'navigationBarTitleText': 'uni-vitesse',
+    'navigationBarTitleText': '电子发票',
     'navigationBarBackgroundColor': '@navBgColor',
     'navigationBarTextStyle': '@navTxtStyle',
     'backgroundColor': '@bgColor',
