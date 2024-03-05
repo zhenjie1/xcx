@@ -12,6 +12,7 @@
     },
     "resolveJsonModule": true,
     "types": [
+      "pinia-plugin-persist-uni",
       "@dcloudio/types",
       "@uni-helper/uni-app-types",
       "@vue-macros/reactivity-transform/macros-global"

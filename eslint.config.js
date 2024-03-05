@@ -8,6 +8,11 @@ module.exports = uni(
         'vue/component-name-in-template-casing': ['error', 'PascalCase'],
       },
     },
+    rules: {
+      'antfu/top-level-function': 'off',
+      'antfu/if-newline': 'off',
+      'curly': 'off',
+    },
   },
   unocss.configs.flat,
 )

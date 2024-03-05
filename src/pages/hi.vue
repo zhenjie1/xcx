@@ -17,7 +17,7 @@ const props = defineProps<{ name: string }>()
     </div>
 
     <div>
-      <button m-3 text-sm btn @click="router.back()">
+      <button btn m-3 text-sm @click="router.back()">
         Back
       </button>
     </div>
