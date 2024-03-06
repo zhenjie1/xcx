@@ -53,6 +53,9 @@ dependencies:
   axios:
     specifier: ^1.6.7
     version: 1.6.7
+  axios-miniprogram-adapter:
+    specifier: ^0.3.5
+    version: 0.3.5
   pinia:
     specifier: ^2.0.36
     version: 2.0.36(typescript@5.3.3)(vue@3.4.3)
@@ -62,6 +65,9 @@ dependencies:
   uni-axios-adapter:
     specifier: ^0.0.4
     version: 0.0.4
+  uniapp-axios-adapter:
+    specifier: ^0.3.2
+    version: 0.3.2(axios@1.6.7)
   vue:
     specifier: ^3.4.3
     version: 3.4.3(typescript@5.3.3)
@@ -5557,6 +5563,23 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
+  /axios-miniprogram-adapter@0.3.5:
+    resolution: {integrity: sha512-ZAudH+aTi0QPIy8IQm26F0nxKoTFa/mNhDfxGkG5ndsQe4RVnyyb6f50tIT13nHtNepAjZo9i+UGmTbke5+lbQ==}
+    dependencies:
+      axios: 0.19.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /axios@0.19.2:
+    resolution: {integrity: sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==}
+    deprecated: Critical security vulnerability fixed in v0.21.1. For more information, see https://github.com/axios/axios/pull/3410
+    dependencies:
+      follow-redirects: 1.5.10
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /axios@1.6.7:
     resolution: {integrity: sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==}
     dependencies:
@@ -6236,6 +6259,17 @@ packages:
     dependencies:
       ms: 2.0.0
     dev: true
+
+  /debug@3.1.0:
+    resolution: {integrity: sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.0.0
+    dev: false
 
   /debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
@@ -7567,6 +7601,15 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+
+  /follow-redirects@1.5.10:
+    resolution: {integrity: sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==}
+    engines: {node: '>=4.0'}
+    dependencies:
+      debug: 3.1.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -9390,7 +9433,6 @@ packages:
 
   /ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
-    dev: true
 
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
@@ -11104,6 +11146,14 @@ packages:
 
   /uni-axios-adapter@0.0.4:
     resolution: {integrity: sha512-YLhiqFvmSpQBnMDtYRns3vt1ZVdSV1gE2SDTlTRj2zgUfI/pzwoa10Od8aB7nU/pbRzMo6RAC0W723hbPOPHuA==}
+    dev: false
+
+  /uniapp-axios-adapter@0.3.2(axios@1.6.7):
+    resolution: {integrity: sha512-Wbq8tkjxTw80KaWqpBbrzB575FlJ0YZ+i/EhPFqJmP8iL/x8yzf04RgdrKP7KlI9VArTpEO5PcSe44ciRzTJ8Q==}
+    peerDependencies:
+      axios: '*'
+    dependencies:
+      axios: 1.6.7
     dev: false
 
   /unicode-canonical-property-names-ecmascript@2.0.0:

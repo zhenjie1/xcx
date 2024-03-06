@@ -1,12 +1,24 @@
-<script setup>
+<script setup lang="ts">
+import { api } from '~/api'
+
+const data = ref({
+  banner: [] as Data[],
+  news: [] as Data[],
+})
+const firstNew = computed(() => data.value.news?.[0])
+
+api.home.home().then((res: Data) => {
+  data.value = res.data
+})
+
 const list = reactive([{
   title: '我要开发票',
   sub: '去开发票',
-  link: '/pages/invoiceList',
+  link: '/pages/invoiceList?status=1',
 }, {
   title: '我的发票',
   sub: '已开/未开发票',
-  link: '/pages/invoiceList',
+  link: '/pages/invoiceList?status=2',
 }, {
   title: '抬头发票',
   sub: '编辑信息',
@@ -25,21 +37,16 @@ function handlerItem(row) {
 <!-- 本示例未包含完整css，获取外链css请参考上文，在hello uni-app项目中查看 -->
 <template>
   <view class="boxContainer pt-1px">
+    <view v-if="firstNew" class="flex items-center gap-2 bg-[#fff7d2] p-2 text-[14px] text-orange-500" @click="router.push('/pages/bulletin')">
+      <view i-mingcute:announcement-line class="flex-shrink-0" />
+      <span>{{ firstNew.title }}</span>
+    </view>
+
     <view class="uni-margin-wrap">
       <swiper class="swiper">
-        <swiper-item>
+        <swiper-item v-for="(item, index) in data.banner" :key="index">
           <view class="swiper-item uni-bg-red">
-            A
-          </view>
-        </swiper-item>
-        <swiper-item>
-          <view class="swiper-item uni-bg-green">
-            B
-          </view>
-        </swiper-item>
-        <swiper-item>
-          <view class="swiper-item uni-bg-blue">
-            C
+            <image :src="item.image" />
           </view>
         </swiper-item>
       </swiper>

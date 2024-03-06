@@ -1,11 +1,16 @@
-export function apiToPromise<F extends (...args: any[]) => any>(fn: F) {
+export function apiToPromise<F extends (...args: any[]) => any>(fn: F, option: Parameters<F>[0]) {
   if (!fn)
     throw new Error('fn is not')
 
   const { resolve, reject, p } = createPromise<ReturnType<F>>()
+
   fn({
+    ...option,
     success: (e: any) => {
-      console.log('成功', e)
+      if ('cancel' in e && 'confirm' in e) {
+        if (e.confirm) resolve()
+        else reject()
+      }
       resolve(e)
     },
     fail: (e: any) => {

@@ -12,6 +12,7 @@ module.exports = uni(
       'antfu/top-level-function': 'off',
       'antfu/if-newline': 'off',
       'curly': 'off',
+      'eqeqeq': 'off',
     },
   },
   unocss.configs.flat,
