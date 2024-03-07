@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import { cloneDeep } from 'lodash-es'
 import { api } from '~/api'
 import { invoiceState } from '~/assets/invoice'
 
@@ -50,7 +51,7 @@ function checkHandler(row: Data) {
 }
 
 function nextHandler() {
-  invoiceState.ids = checkList.value.map(v => v.id).join(',')
+  invoiceState.invoices = cloneDeep(checkList.value)
   router.push('/pages/lookUp?type=check')
 }
 </script>

@@ -15,3 +15,5 @@ export const list = (status: string) => axiosIns.get('/invoice/list', {
     status,
   },
 })
+
+export const add = (data: Data) => axiosIns.post('/invoice/add', data)

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { api } from '~/api'
 import { invoiceState } from '~/assets/invoice'
+import { cloneDeep } from "lodash-es";
 
 const props = defineProps<{
   type: string
@@ -18,7 +19,7 @@ function goLookUpAdd() {
 
 function handler(item: Data) {
   if (props.type === 'check') {
-    invoiceState.title_id = item.id
+    invoiceState.title_id = cloneDeep(item)
     router.push(`/pages/invoiceConfirm`)
   }
   else

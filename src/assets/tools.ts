@@ -1,11 +1,11 @@
-export function apiToPromise<F extends (...args: any[]) => any>(fn: F, option: Parameters<F>[0]) {
+export function apiToPromise<F extends (...args: any[]) => any>(fn: F, option?: Parameters<F>[0]) {
   if (!fn)
     throw new Error('fn is not')
 
   const { resolve, reject, p } = createPromise<ReturnType<F>>()
 
   fn({
-    ...option,
+    ...(option || {}),
     success: (e: any) => {
       if ('cancel' in e && 'confirm' in e) {
         if (e.confirm) resolve()
