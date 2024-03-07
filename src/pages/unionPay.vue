@@ -1,6 +1,5 @@
 <script setup>
-const currentDate = ref(getDate({ format: true }))
-const date = ref(currentDate)
+import {api} from "~/api";
 
 const startDate = computed(() => getDate('start'))
 const endDate = computed(() => getDate('end'))
@@ -21,8 +20,14 @@ function getDate(type) {
   return `${year}-${month}-${day}`
 }
 
+const form = reactive({
+  order_no: '',
+  date: getDate({ format: true }),
+  car_num: ''
+})
+
 function change(e) {
-  currentDate.value = e.detail.value
+  form.date = e.detail.value
 }
 
 function alert() {
@@ -33,24 +38,60 @@ function alert() {
     showCancel: false,
   })
 }
+
+
+function scanHandler() {
+  uni.scanCode({
+    success(e) {
+      if (e?.result) {
+        form.order_no = e.result
+      }
+    },
+    fail() {
+      uni.showToast({
+        icon: 'none',
+        title: '扫描失败',
+      })
+    },
+  })
+}
+
+async function submit () {
+  let message = ''
+  if (!form.order_no) message = '请输入银联消费凭证号'
+  else if (!form.car_num) message = '请输入车牌号'
+
+  if(message) return uni.showToast({
+    title: message,
+    icon: 'none'
+  })
+
+  const  res = await api.unionPay.add(form)
+  console.log(res)
+
+
+}
 </script>
 
 <template>
   <div class="bg-white">
-    <input type="text" class="item h-13 px-3" placeholder="请输入银联消费批次号">
-    <input type="text" class="item h-13 px-3" placeholder="请输入银联消费凭证号">
-    <input type="text" class="item h-13 px-3" placeholder="请输入银联消费参考号">
+    <div class="relative">
+      <input v-model="form.order_no" type="text" class="item h-13 px-3" placeholder="请输入银联消费凭证号">
+      <div class="absolute right-0 top-0 text-$main text-5 p-4 z-10 bg-white" @click="scanHandler">
+        <div i-tabler:text-scan-2></div>
+      </div>
+    </div>
     <div class="item flex justify-between px-3">
-      <picker mode="date" class="w-full" :value="date" :start="startDate" :end="endDate" @change="change">
+      <picker mode="date" class="w-full" :value="form.date" :start="startDate" :end="endDate" @change="change">
         <div class="flex items-center justify-between">
-          <span class="lh-13 opacity-50">请选择交易时间</span>
+          <span class="lh-13">{{ form.date }}</span>
           <div class="flex items-center">
-            <span>{{ currentDate }}</span>
             <div i-material-symbols:arrow-forward-ios class="arrow opacity-20" />
           </div>
         </div>
       </Picker>
     </div>
+    <input v-model="form.car_num" type="text" class="item h-13 px-3" placeholder="请输入车牌号">
   </div>
 
   <div class="mx-3 mt-3 flex items-center text-14px text-blue" @click="alert">
@@ -58,7 +99,7 @@ function alert() {
     <span>什么是银联消费批次号、凭证号和参考号</span>
   </div>
 
-  <button type="primary" class="mx-3 mb-10 mt-10">
+  <button type="primary" class="mx-3 mb-10 mt-10" @click="submit">
     确认
   </button>
 </template>

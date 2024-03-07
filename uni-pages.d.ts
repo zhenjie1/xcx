@@ -18,6 +18,7 @@ interface NavigateToOptions {
        "pages/whatMerchant" |
        "pages/issue/detail" |
        "pages/issue/index" |
+       "pages/issue/source" |
        "pages-sub/index";
 }
 interface RedirectToOptions extends NavigateToOptions {}

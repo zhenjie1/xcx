@@ -26,7 +26,7 @@ const list = reactive([{
 }, {
   title: '常见问题',
   sub: '答疑解惑',
-  link: '/pages/invoiceList',
+  link: '/pages/issue/index',
 }])
 
 function handlerItem(row) {

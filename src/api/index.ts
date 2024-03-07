@@ -4,6 +4,7 @@ import * as login from './login'
 import * as home from './home'
 import * as lookUp from './lookUp'
 import * as invoice from './invoice'
+import * as unionPay from './unionPay'
 import adapter from '~/api/adapter'
 import { axiosBefore } from '~/api/before'
 import { axiosAfter } from '~/api/after'
@@ -23,4 +24,5 @@ export const api = {
   home,
   lookUp,
   invoice,
+  unionPay
 }

@@ -6,8 +6,8 @@ export function axiosBefore(axios: AxiosInstance) {
     const userStore = useUserStore()
 
     // config.header = {}
-    config.headers.token = userStore.info.token
-    console.log(`headers -> ${config.url}`, config.headers)
+    if (userStore.info.token)
+      config.headers.token = userStore.info.token
 
     return config
   })
