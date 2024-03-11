@@ -92,6 +92,7 @@ export declare interface LocationUniAppParams
 
 export function useRouter(config: RouterConfig = {}): Router {
   function getQueryStringify(params: Record<string, any>) {
+    console.log('getQueryStringify', params)
     return Object.entries(params) // 将对象转换成 [key, value] 数组
       .map(([key, value]) => encodeURI(
         `${key}=${typeof value === 'object' ? JSON.stringify(value) : value}`,

@@ -45,3 +45,9 @@ export function createPromise<T = any>() {
     reject: reject!,
   }
 }
+
+export function waitTime (time: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time)
+  })
+}

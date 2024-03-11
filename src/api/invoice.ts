@@ -16,4 +16,19 @@ export const list = (status: string) => axiosIns.get('/invoice/list', {
   },
 })
 
-export const add = (data: Data) => axiosIns.post('/invoice/add', data)
+export const add = (data: Data) => axiosIns.post('/invoice/add', data, {
+  showMsg: true
+})
+
+
+// export const view = () => axiosIns.
+
+export const download = (id: string) => axiosIns.post('/invoice/downUrl', {
+  id
+})
+
+
+// 对失败的再次开票
+export const rebill = (id: string) => axiosIns.post('/invoice/again_add', { id }, {
+  showMsg: true
+})

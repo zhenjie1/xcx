@@ -19,7 +19,7 @@ function goLookUpAdd() {
 
 function handler(item: Data) {
   if (props.type === 'check') {
-    invoiceState.title_id = cloneDeep(item)
+    invoiceState.title_data = cloneDeep(item)
     router.push(`/pages/invoiceConfirm`)
   }
   else

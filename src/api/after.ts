@@ -1,16 +1,19 @@
 import type { AxiosInstance } from 'axios'
+import {waitTime} from "~/assets/tools";
 
 export function axiosAfter(axios: AxiosInstance) {
-  axios.interceptors.response.use((response) => {
-
+  axios.interceptors.response.use(async (response) => {
     const { code, msg } = response.data || {}
-    if (code !== 1 && msg) {
+    const { showMsg = false } = response.config
+    if ((showMsg || code !== 1) && msg) {
       uni.showToast({
         title: msg,
-        icon: 'error'
+        icon: 'error',
       })
-      throw new Error(msg)
+
+      await waitTime(1500)
     }
+    if (code !== 1) throw new Error(msg)
     return response.data
   })
 }

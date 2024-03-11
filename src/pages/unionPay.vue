@@ -76,14 +76,14 @@ async function submit () {
 <template>
   <div class="bg-white">
     <div class="relative">
-      <input v-model="form.order_no" type="text" class="item h-13 px-3" placeholder="请输入银联消费凭证号">
+      <input v-model="form.order_no" type="text" class="item h-13 px-3 w-[calc(100vw-48rpx)]" placeholder="请输入银联消费凭证号">
       <div class="absolute right-0 top-0 text-$main text-5 p-4 z-10 bg-white" @click="scanHandler">
         <div i-tabler:text-scan-2></div>
       </div>
     </div>
     <div class="item flex justify-between px-3">
-      <picker mode="date" class="w-full" :value="form.date" :start="startDate" :end="endDate" @change="change">
-        <div class="flex items-center justify-between">
+      <picker mode="date" class="flex flex-1" :value="form.date" :start="startDate" :end="endDate" @change="change">
+        <div class="flex items-center justify-between w-[calc(100vw-48rpx)]">
           <span class="lh-13">{{ form.date }}</span>
           <div class="flex items-center">
             <div i-material-symbols:arrow-forward-ios class="arrow opacity-20" />
@@ -91,7 +91,7 @@ async function submit () {
         </div>
       </Picker>
     </div>
-    <input v-model="form.car_num" type="text" class="item h-13 px-3" placeholder="请输入车牌号">
+    <input v-model="form.car_num" type="text" class="item h-13 px-3 w-[calc(100vw-48rpx)]" placeholder="请输入车牌号">
   </div>
 
   <div class="mx-3 mt-3 flex items-center text-14px text-blue" @click="alert">
