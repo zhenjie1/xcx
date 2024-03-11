@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { api } from '~/api'
+import {formatRichText} from "~/assets/tools";
 
 const news = ref<Data[]>([])
 api.home.newList('question').then((res: Data) => {
@@ -13,13 +14,15 @@ async function handler(row: Data) {
   else {
     row.show = true
     const res = await api.home.newDetail(row.id)
-    row.content = res.data?.content || ''
+    let content = res.data?.content || ''
+    content = formatRichText(content)
+    row.content = content
   }
 }
 </script>
 
 <template>
-  <div class="pt-1px">
+  <div class="pt-1px bg-#f5f5f5 min-h-full">
     <div class="m-3 overflow-hidden rounded">
       <div v-for="(item, index) in news" :key="index" class="item bg-white px-3" @click="handler(item)">
         <div class="flex items-center justify-between lh-12">
@@ -33,6 +36,10 @@ async function handler(row: Data) {
     </div>
   </div>
 </template>
+
+<style>
+.richImage{width: auto !important;}
+</style>
 
 <style scoped lang="scss">
 .item + .item{border-top: 1px solid var(--line);}

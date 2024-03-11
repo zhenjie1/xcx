@@ -28,9 +28,9 @@ function handler(item: Data) {
 </script>
 
 <template>
-  <view class="h-100vh bg-#f8f8f8 px-3 pt-1px">
+  <view class="min-h-full bg-#f5f5f5 px-3 pt-1px">
     <view class="">
-      <view v-for="(item, index) in list" :key="index" class="relative mt-3 rounded bg-white p-3 shadow" @click="handler(item)">
+      <view v-for="(item, index) in list" :key="index" class="relative mt-3 rounded bg-white p-3 b b-solid b-#f5f5f5" @click="handler(item)">
         <view>{{ item.name }}</view>
         <view v-if="item.type === 1" class="mt-1 text-3 opacity-50">
           税号：{{ item.tax_number }}
@@ -39,7 +39,7 @@ function handler(item: Data) {
       </view>
     </view>
 
-    <view class="mt-4 rounded bg-white py-6 text-center shadow" @click="goLookUpAdd">
+    <view class="mt-4 rounded bg-white py-6 text-center b b-solid b-#f5f5f5" @click="goLookUpAdd">
       <div class="mx-auto mb-2 h-10 w-10 flex border border-black rounded-full border-dashed opacity-50">
         <div i-tabler:plus class="m-auto" />
       </div>

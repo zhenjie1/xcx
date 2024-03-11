@@ -124,12 +124,12 @@ async function rebillHandler (row: Data) {
     <view v-if="list.length === 0" class="emitContainer flex-1 overflow-y-auto">
       <div class="box">
         <image src="../../static/empty.svg" style="width: 500rpx;height: 500rpx;margin:auto;display: block;margin-bottom: -40rpx;" mode="" />
-        <p class="p p1" @click="router.push('/pages/merchant')">
-          找不到可开票记录？点击试试用订单搜索
-        </p>
-        <p class="p p1" @click="goScan">
-          试试扫描二维码
-        </p>
+<!--        <p class="p p1" @click="router.push('/pages/merchant')">-->
+<!--          找不到可开票记录？点击试试用订单搜索-->
+<!--        </p>-->
+<!--        <p class="p p1" @click="goScan">-->
+<!--          试试扫描二维码-->
+<!--        </p>-->
       </div>
     </view>
     <view v-else class="flex-1 overflow-y-auto">

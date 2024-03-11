@@ -19,16 +19,14 @@ async function submit() {
     email: email.value,
   })
 
-  setTimeout(() => {
-    uni.reLaunch({
-      url: '/pages/index',
-    })
-  }, 2000)
+  uni.reLaunch({
+    url: '/pages/invoiceList?status=2',
+  })
 }
 </script>
 
 <template>
-  <div class="p-3">
+  <div class="p-3 min-h-full bg-#f5f5f5">
     <p class="text-14px op-50">
       邮箱
     </p>
