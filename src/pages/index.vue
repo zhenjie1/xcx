@@ -46,7 +46,7 @@ function handlerItem(row) {
       <swiper class="swiper">
         <swiper-item v-for="(item, index) in data.banner" :key="index">
           <view class="swiper-item uni-bg-red">
-            <image :src="item.image" />
+            <image :src="item.image" class="image" mode="aspectFill" />
           </view>
         </swiper-item>
       </swiper>
@@ -150,6 +150,7 @@ function handlerItem(row) {
 
 .swiper {
   height: 300rpx;
+  .image{height: 100%;width: 100%;}
 }
 
 .swiper-item {
