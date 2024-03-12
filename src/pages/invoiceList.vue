@@ -16,6 +16,8 @@ const tab = reactive({
 const list = ref<Data[]>([])
 const checkList = computed(() => list.value.filter(v => v.check))
 
+onShow(initDataFn)
+
 async function initDataFn() {
   list.value = []
   const res = await api.invoice.list(tab.active)
@@ -31,7 +33,7 @@ function payStatus(k: string) {
   return data[k]
 }
 
-watch(() => tab.active, initDataFn, { immediate: true })
+watch(() => tab.active, initDataFn)
 
 function goScan() {
   router.push('/pages/scanCode')
