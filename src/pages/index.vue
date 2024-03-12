@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { api } from '~/api'
+import icon1 from '../static/home1.png'
+import icon2 from '../static/home2.png'
+import icon3 from '../static/home3.png'
+import icon4 from '../static/home4.png'
+import TheModal from "~/components/TheModal.vue";
 
 const data = ref({
   banner: [] as Data[],
@@ -14,23 +19,34 @@ api.home.home().then((res: Data) => {
 const list = reactive([{
   title: '我要开发票',
   sub: '去开发票',
-  link: '/pages/invoiceList?status=1',
+  link: '/pages/invoiceList',
+  icon: icon1,
+  query: { status: '1' }
 }, {
   title: '我的发票',
   sub: '已开/未开发票',
-  link: '/pages/invoiceList?status=2',
+  link: '/pages/invoiceList',
+  icon: icon2,
+  query: { status: '2' }
 }, {
   title: '抬头发票',
   sub: '编辑信息',
   link: '/pages/lookUp',
-}, {
-  title: '常见问题',
-  sub: '答疑解惑',
-  link: '/pages/issue/index',
-}])
+  icon: icon3,
+},
+//   {
+//   title: '常见问题',
+//   sub: '答疑解惑',
+//   link: '/pages/issue/index',
+//   icon: icon4,
+// }
+])
 
 function handlerItem(row) {
-  router.push(row.link)
+  router.push({
+    path: row.link,
+    query: row.query
+  })
 }
 </script>
 
@@ -42,10 +58,10 @@ function handlerItem(row) {
       <span>{{ firstNew.title }}</span>
     </view>
 
-    <view class="uni-margin-wrap">
+    <view class="uni-margin-wrap rounded overflow-hidden">
       <swiper class="swiper">
         <swiper-item v-for="(item, index) in data.banner" :key="index">
-          <view class="swiper-item uni-bg-red">
+          <view class="swiper-item">
             <image :src="item.image" class="image" mode="aspectFill" />
           </view>
         </swiper-item>
@@ -56,7 +72,7 @@ function handlerItem(row) {
       <view class="t1">
         发票服务
       </view>
-      <view class="t2" @click="router.push('/pages/unionPay')">
+      <view class="t2 py-1" @click="router.push('/pages/unionPay')">
         银联云闪付用户开票 >
       </view>
     </view>
@@ -71,20 +87,21 @@ function handlerItem(row) {
             {{ item.sub }}
           </view>
         </view>
-        <view class="icon" />
+        <image class="icon" :src="item.icon"></image>
+<!--        <view class="icon" />-->
       </view>
     </view>
 
     <view class="titleMax">
       <view class="t1">
-        自助服务
+        常见问题
       </view>
     </view>
 
-    <view class="server">
+    <view class="server" @click="router.push({path: '/pages/issue/index'})">
       <view class="text">
         <view class="title">
-          自助服务
+          常见问题
         </view>
         <view class="sub">
           快速解决您的发票问题烦恼~
@@ -145,7 +162,6 @@ function handlerItem(row) {
   width: 690rpx;
   margin: 20rpx;
   width: calc(100% - 40rpx);
-  background-color: rgba(0, 0, 0, .04);
 }
 
 .swiper {

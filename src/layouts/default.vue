@@ -1,6 +1,6 @@
 <template>
   <div
-    class="app h-100vh bg-#f5f5f5" :class="{
+    class="app h-100vh" :class="{
       dark: isDark,
     }"
   >

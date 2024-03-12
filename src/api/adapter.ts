@@ -1,5 +1,13 @@
 import type { AxiosPromise, InternalAxiosRequestConfig } from 'axios'
 
+export {}
+
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    showToast?: boolean
+  }
+}
+
 const getResponse = (res: any, config: any) => {
   const { statusCode, errMsg } = res
   return {

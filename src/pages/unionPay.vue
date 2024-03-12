@@ -30,13 +30,17 @@ function change(e) {
   form.date = e.detail.value
 }
 
+const show = ref(false)
+const msg = `一，银联凭证号：打开“云闪付”App后点击“我的”，点击“我的账单”，选择需要开票的交易，进入详情，可找到商户订单号，扫描加载
+二，车牌号：车牌号为两部分，车牌颜色+车牌号。 例：蓝豫A123456`
 function alert() {
-  uni.showModal({
-    title: '温馨提示',
-    content: `方式一: 打开“云闪付”App后点击“金融”菜单，点击已绑定的银行卡，选择“交易记录”项，点击需要开票的交易，进入详情。划动页面至底部即可找到“批次号”、“凭证号”和“参考号’。
-    方式二:打开“云闪付”App后，点击“首页”菜单，点击“卡片管理”，点击已绑定的银行卡进入详情，点击“交易记录”，选择需要开票的交易，进入详情。划动页面底部即可找到“批次号”、“凭证号”和“参考号”。`,
-    showCancel: false,
-  })
+  show.value = true
+//   uni.showModal({
+//     title: '温馨提示',
+//     content: `一，银联凭证号：打开“云闪付”App后点击“我的”，点击“我的账单”，选择需要开票的交易，进入详情，可找到商户订单号，扫描加载
+// 二，车牌号：车牌号为两部分，车牌颜色+车牌号。 例：蓝豫A123456`,
+//     showCancel: false,
+//   })
 }
 
 
@@ -74,34 +78,37 @@ async function submit () {
 </script>
 
 <template>
-  <div class="bg-white">
-    <div class="relative">
-      <input v-model="form.order_no" type="text" class="item h-13 px-3" placeholder="请输入银联消费凭证号">
-      <div class="absolute right-0 top-0 text-$main text-5 p-4 z-10 bg-white" @click="scanHandler">
-        <div i-tabler:text-scan-2></div>
-      </div>
-    </div>
-    <div class="item flex justify-between px-3">
-      <picker mode="date" class="w-full" :value="form.date" :start="startDate" :end="endDate" @change="change">
-        <div class="flex items-center justify-between">
-          <span class="lh-13">{{ form.date }}</span>
-          <div class="flex items-center">
-            <div i-material-symbols:arrow-forward-ios class="arrow opacity-20" />
-          </div>
+  <div class="min-h-full bg-#f5f5f5">
+    <div class="bg-white">
+      <div class="relative">
+        <input v-model="form.order_no" type="text" class="item h-13 px-3 w-[calc(100vw-48rpx)]" placeholder="请输入银联消费凭证号">
+        <div class="absolute right-0 top-0 text-$main text-5 p-4 z-10 bg-white" @click="scanHandler">
+          <div i-tabler:text-scan-2></div>
         </div>
-      </Picker>
+      </div>
+      <div class="item flex justify-between px-3">
+        <picker mode="date" class="flex flex-1" :value="form.date" :start="startDate" :end="endDate" @change="change">
+          <div class="flex items-center justify-between w-[calc(100vw-48rpx)]">
+            <span class="lh-13">{{ form.date }}</span>
+            <div class="flex items-center">
+              <div i-material-symbols:arrow-forward-ios class="arrow opacity-20" />
+            </div>
+          </div>
+        </Picker>
+      </div>
+      <input v-model="form.car_num" type="text" class="item h-13 px-3 w-[calc(100vw-48rpx)]" placeholder="请输入车牌号">
     </div>
-    <input v-model="form.car_num" type="text" class="item h-13 px-3" placeholder="请输入车牌号">
-  </div>
 
-  <div class="mx-3 mt-3 flex items-center text-14px text-blue" @click="alert">
-    <div i-bi:question-circle-fill class="mr1" />
-    <span>什么是银联消费批次号、凭证号和参考号</span>
-  </div>
+    <div class="mx-3 mt-3 flex items-center text-14px text-blue" @click="alert">
+      <div i-bi:question-circle-fill class="mr1" />
+      <span>什么是银联凭证号和车牌号</span>
+    </div>
 
-  <button type="primary" class="mx-3 mb-10 mt-10" @click="submit">
-    确认
-  </button>
+    <button type="primary" class="mx-3 mb-10 mt-10" @click="submit">
+      确认
+    </button>
+  </div>
+  <TheModal v-model:visible="show" v-if="show" title="提示" :msg="msg"/>
 </template>
 
 <style lang="scss" scoped>
