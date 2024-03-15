@@ -5,7 +5,10 @@ export default defineUniPages({
     {
       path: 'pages/invoiceList',
       style: {
+        enablePullDownRefresh: true,
+        onReachBottomDistance: 150,
         navigationBarBackgroundColor: '#fff',
+        onReachBottomDistance: 150,
       },
     },
     {

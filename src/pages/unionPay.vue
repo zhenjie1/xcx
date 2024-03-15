@@ -1,5 +1,5 @@
 <script setup>
-import {api} from "~/api";
+import { api } from '~/api'
 
 const startDate = computed(() => getDate('start'))
 const endDate = computed(() => getDate('end'))
@@ -23,7 +23,7 @@ function getDate(type) {
 const form = reactive({
   order_no: '',
   date: getDate({ format: true }),
-  car_num: ''
+  car_num: '',
 })
 
 function change(e) {
@@ -43,7 +43,6 @@ function alert() {
 //   })
 }
 
-
 function scanHandler() {
   uni.scanCode({
     success(e) {
@@ -60,20 +59,21 @@ function scanHandler() {
   })
 }
 
-async function submit () {
+async function submit() {
   let message = ''
   if (!form.order_no) message = '请输入银联消费凭证号'
   else if (!form.car_num) message = '请输入车牌号'
 
-  if(message) return uni.showToast({
+  if (message) return uni.showToast({
     title: message,
-    icon: 'none'
+    icon: 'none',
   })
 
-  const  res = await api.unionPay.add(form)
-  console.log(res)
+  await api.unionPay.add(form)
 
-
+  uni.reLaunch({
+    url: '/pages/invoiceList?status=1',
+  })
 }
 </script>
 
@@ -81,14 +81,14 @@ async function submit () {
   <div class="min-h-full bg-#f5f5f5">
     <div class="bg-white">
       <div class="relative">
-        <input v-model="form.order_no" type="text" class="item h-13 px-3 w-[calc(100vw-48rpx)]" placeholder="请输入银联消费凭证号">
-        <div class="absolute right-0 top-0 text-$main text-5 p-4 z-10 bg-white" @click="scanHandler">
-          <div i-tabler:text-scan-2></div>
+        <input v-model="form.order_no" type="text" class="item h-13 w-[calc(100vw-48rpx)] px-3" placeholder="请输入银联消费凭证号">
+        <div class="absolute right-0 top-0 z-10 bg-white p-4 text-5 text-$main" @click="scanHandler">
+          <div i-tabler:text-scan-2 />
         </div>
       </div>
       <div class="item flex justify-between px-3">
         <picker mode="date" class="flex flex-1" :value="form.date" :start="startDate" :end="endDate" @change="change">
-          <div class="flex items-center justify-between w-[calc(100vw-48rpx)]">
+          <div class="w-[calc(100vw-48rpx)] flex items-center justify-between">
             <span class="lh-13">{{ form.date }}</span>
             <div class="flex items-center">
               <div i-material-symbols:arrow-forward-ios class="arrow opacity-20" />
@@ -96,7 +96,7 @@ async function submit () {
           </div>
         </Picker>
       </div>
-      <input v-model="form.car_num" type="text" class="item h-13 px-3 w-[calc(100vw-48rpx)]" placeholder="请输入车牌号">
+      <input v-model="form.car_num" type="text" class="item h-13 w-[calc(100vw-48rpx)] px-3" placeholder="请输入车牌号">
     </div>
 
     <div class="mx-3 mt-3 flex items-center text-14px text-blue" @click="alert">
@@ -108,7 +108,7 @@ async function submit () {
       确认
     </button>
   </div>
-  <TheModal v-model:visible="show" v-if="show" title="提示" :msg="msg"/>
+  <TheModal v-if="show" v-model:visible="show" title="提示" :msg="msg" />
 </template>
 
 <style lang="scss" scoped>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { reactive, ref, computed, watch, defineProps } from 'vue'
+import { computed, defineProps, reactive, ref, watch } from 'vue'
 import { cloneDeep } from 'lodash-es'
 import { api } from '~/api'
 import { invoiceState } from '~/assets/invoice'
-import { router } from "~/composables/useRouter";
+import { router } from '~/composables/useRouter'
+import { awaitWrap } from '~/assets/tools'
 
 const props = defineProps<{
   status?: string
@@ -18,15 +19,43 @@ const tab = reactive({
   handler: (row: Data) => tab.active = row.key,
 })
 
+const page = reactive({
+  current: 1,
+  size: 10,
+  // 一共多少页数据
+  lastPage: 2,
+})
 const list = ref<Data[]>([])
 const checkList = computed(() => list.value.filter(v => v.check))
 
-onShow(initDataFn)
+onShow(() => {
+  page.current = 1
+  page.lastPage = 2
+  initDataFn()
+})
+onPullDownRefresh(() => {
+  page.current = 1
+  page.lastPage = 2
+  initDataFn()
+})
+
+onReachBottom(() => {
+  initDataFn()
+})
 
 async function initDataFn() {
+  if (page.current >= page.lastPage) {
+    uni.stopPullDownRefresh()
+    return console.log('到底了')
+  }
   list.value = []
-  const res = await api.invoice.list(tab.active)
-  list.value = res.data?.data || []
+  const [err, res] = await awaitWrap(api.invoice.list(tab.active, page.current, page.size))
+  uni.stopPullDownRefresh()
+
+  if (err) return
+  list.value = res!.data?.data || []
+  page.current = res!.data.current_page
+  page.lastPage = res!.data.last_page
 }
 
 function payStatus(k: string) {
@@ -38,7 +67,11 @@ function payStatus(k: string) {
   return data[k]
 }
 
-watch(() => tab.active, initDataFn)
+watch(() => tab.active, () => {
+  page.current = 1
+  page.lastPage = 2
+  initDataFn()
+})
 
 function goScan() {
   router.push('/pages/scanCode')
@@ -63,49 +96,49 @@ function nextHandler() {
 }
 
 // 查看发票
-function view (row: Data) {
+function view(row: Data) {
 
 }
 
 // 下载发票
-async function download (row: Data) {
-
+async function download(row: Data) {
   row.loading = true
-  const url = 'https://xz.bwfapiao.com/914101001001001001/041001900111/041001900111_11221872.pdf?Expires=2025244919&OSSAccessKeyId=LTAIB3SkRb2V8Vu1&Signature=njif3O2vG%2Fu0bh8IKmpY53BRkME%3D'
+  const [err, res] = await awaitWrap(api.invoice.download(row.id))
+  if (err) return row.loading = false
+
   uni.downloadFile({
-    url: url,
-    success: function (res) {
-      var filePath = res.tempFilePath;
+    url: res.data.url,
+    success(res) {
+      const filePath = res.tempFilePath
       uni.openDocument({
-        filePath: filePath,
+        filePath,
         showMenu: true,
-        fail: e => {
+        fail: (e) => {
           uni.showToast({
             icon: 'none',
-            title: `打开文件失败: ${e.errMsg}`
+            title: `打开文件失败: ${e.errMsg}`,
           })
         },
-        complete: () => row.loading = false
-      });
+        complete: () => row.loading = false,
+      })
     },
     fail(e) {
       setTimeout(() => row.loading = false, 100)
       uni.showToast({
         icon: 'none',
-        title: e.errMsg
+        title: e.errMsg,
       })
-    }
-  });
+    },
+  })
   // uni.openDocument({
   //   filePath: res.data.url
   // })
   // const res = await api.invoice.download(row.id)
   // console.log(res)
-
 }
 
 // 再次开票
-async function rebillHandler (row: Data) {
+async function rebillHandler(row: Data) {
   row.rebillLoading = true
   api.invoice.rebill(row.id).then(() => {
     initDataFn()
@@ -116,26 +149,26 @@ async function rebillHandler (row: Data) {
 </script>
 
 <template>
-  <view class="flex flex-col container">
+  <view class="h-full flex flex-col container">
     <view class="topFixed">
       <view v-for="(item, i) in tab.nav" :key="item.key" class="item" :class="{ active: item.key === tab.active, [`item-${i}`]: true }" @click="tab.handler(item)">
         {{ item.text }}
       </view>
     </view>
 
-    <view v-if="list.length === 0" class="emitContainer flex-1 overflow-y-auto">
+    <view v-if="list.length === 0" class="emitContainer flex-1 overflow-y-auto bg-#f5f5f5">
       <div class="box">
         <image src="../../static/empty.svg" style="width: 500rpx;height: 500rpx;margin:auto;display: block;margin-bottom: -40rpx;" mode="" />
-<!--        <p class="p p1" @click="router.push('/pages/merchant')">-->
-<!--          找不到可开票记录？点击试试用订单搜索-->
-<!--        </p>-->
-<!--        <p class="p p1" @click="goScan">-->
-<!--          试试扫描二维码-->
-<!--        </p>-->
+        <!--        <p class="p p1" @click="router.push('/pages/merchant')"> -->
+        <!--          找不到可开票记录？点击试试用订单搜索 -->
+        <!--        </p> -->
+        <!--        <p class="p p1" @click="goScan"> -->
+        <!--          试试扫描二维码 -->
+        <!--        </p> -->
       </div>
     </view>
-    <view v-else class="flex-1 overflow-y-auto">
-      <view v-for="(item, index) in list" :key="index" class="m-3 rounded bg-white p-2 relative overflow-hidden" @click="checkHandler(item)">
+    <view v-else class="flex-1 bg-#f5f5f5 pt-10">
+      <view v-for="(item, index) in list" :key="index" class="relative m-3 overflow-hidden rounded bg-white p-2" @click="checkHandler(item)">
         <view class="mb-2 flex items-center justify-between">
           <div class="rounded bg-$main px-6px py-2px text-14px text-white">
             {{ item.car_num }}
@@ -146,12 +179,12 @@ async function rebillHandler (row: Data) {
           </div>
           <div v-else class="radio text-$main">
             <div v-if="item.is_invoice == 4">
-              <view class="text-$main px-3 rounded text-3 b b-solid b-$main h-6 lh-6 flex" @click="rebillHandler(item)">
-                <div class="m-auto" v-if="item.rebillLoading" i-line-md:loading-twotone-loop></div>
-                <span class="m-auto" v-else>重新开票</span>
+              <view class="h-6 flex b b-$main rounded b-solid px-3 text-3 text-$main lh-6" @click="rebillHandler(item)">
+                <div v-if="item.rebillLoading" class="m-auto" i-line-md:loading-twotone-loop />
+                <span v-else class="m-auto">重新开票</span>
               </view>
             </div>
-<!--            123321-->
+            <!--            123321 -->
           </div>
         </view>
         <view class="flex justify-between b-t b-t-$line b-t-solid pt-2">
@@ -165,26 +198,28 @@ async function rebillHandler (row: Data) {
             <p>
               {{ item.money }}元
             </p>
-            <p class="text-right">{{ payStatus(item.pay_type) }}</p>
+            <p class="text-right">
+              {{ payStatus(item.pay_type) }}
+            </p>
           </div>
         </view>
-        <view v-if="tab.active == '2'" class="w-70% flex items-center justify-between text-3">
-          <div class="flex items-center text-$main gap-1 py-1" @click="download(item)">
+        <view v-if="tab.active == '2' && item.is_invoice != 2" class="w-70% flex items-center justify-between text-3">
+          <div class="flex items-center gap-1 py-1 text-$main" @click="download(item)">
             <span>查看发票</span>
-            <div v-if="item.loading" i-line-md:loading-twotone-loop></div>
-            <div v-else i-material-symbols:arrow-circle-right-outline></div>
+            <div v-if="item.loading" i-line-md:loading-twotone-loop />
+            <div v-else i-material-symbols:arrow-circle-right-outline />
           </div>
-<!--          <div class="flex items-center text-$main gap-1 py-1" @click="download(item)">-->
-<!--            <span>下载发票</span>-->
-<!--            <div v-if="item.loading" i-line-md:loading-twotone-loop></div>-->
-<!--            <div v-else i-material-symbols:downloading-rounded></div>-->
-<!--          </div>-->
+          <!--          <div class="flex items-center text-$main gap-1 py-1" @click="download(item)"> -->
+          <!--            <span>下载发票</span> -->
+          <!--            <div v-if="item.loading" i-line-md:loading-twotone-loop></div> -->
+          <!--            <div v-else i-material-symbols:downloading-rounded></div> -->
+          <!--          </div> -->
         </view>
-        <view v-if="tab.active == '2'" class="w-20 h-20 absolute right--4 bottom--4 transform rotate--45 op-40">
-          <image v-if="item.is_invoice == 1" src="../static/p-no.png" class="w-full h-full"></image>
-          <image v-else-if="item.is_invoice == 2" src="../static/p-loading.png" class="w-full h-full"></image>
-          <image v-else-if="item.is_invoice == 3" src="../static/p-ok.png" class="w-full h-full"></image>
-          <image v-else-if="item.is_invoice == 4" src="../static/p-fail.png" class="w-full h-full"></image>
+        <view v-if="tab.active == '2'" class="absolute bottom--4 right--4 h-20 w-20 rotate--45 transform op-40">
+          <image v-if="item.is_invoice == 1" src="../static/p-no.png" class="h-full w-full" />
+          <image v-else-if="item.is_invoice == 2" src="../static/p-loading.png" class="h-full w-full" />
+          <image v-else-if="item.is_invoice == 3" src="../static/p-ok.png" class="h-full w-full" />
+          <image v-else-if="item.is_invoice == 4" src="../static/p-fail.png" class="h-full w-full" />
         </view>
       </view>
     </view>
@@ -210,7 +245,7 @@ async function rebillHandler (row: Data) {
     .p{color: var(--main);margin-bottom: 40rpx;text-align: center;font-size: 24rpx;}
   }
 }
-.topFixed{display: flex;background-color: white;
+.topFixed{display: flex;background-color: white;position: fixed;top: 0;left: 0;width: 100%;z-index: 10;border-bottom: 1px solid #e6e6e6;
   .item{flex: 1;text-align: center;line-height: 40rpx;padding: 20rpx 0;color: #999;}
   .item-1{position: relative;
     &:before{content: '';display: block;border-left: 1px solid #e6e6e6;width: 1rpx;height: 50%;position: absolute;left:0;top:50%;transform: translateY(-50%);}

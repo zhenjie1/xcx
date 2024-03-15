@@ -1,8 +1,6 @@
 <template>
   <div
-    class="app h-100vh" :class="{
-      dark: isDark,
-    }"
+    class="app min-h-100vh"
   >
     <slot />
   </div>
