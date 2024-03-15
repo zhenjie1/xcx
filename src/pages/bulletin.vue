@@ -19,7 +19,7 @@ async function handler(row: Data) {
 </script>
 
 <template>
-  <div class="pt-1px">
+  <div class="min-h-100vh bg-#f5f5f5 pt-1px">
     <div class="m-3 overflow-hidden rounded">
       <div v-for="(item, index) in news" :key="index" class="item bg-white px-3" @click="handler(item)">
         <div class="flex items-center justify-between lh-12">
