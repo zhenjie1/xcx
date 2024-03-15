@@ -1,9 +1,6 @@
 <script setup>
 import { api } from '~/api'
 
-const startDate = computed(() => getDate('start'))
-const endDate = computed(() => getDate('end'))
-
 function getDate(type) {
   const date = new Date()
   let year = date.getFullYear()
@@ -22,7 +19,6 @@ function getDate(type) {
 
 const form = reactive({
   order_no: '',
-  date: getDate({ format: true }),
   car_num: '',
 })
 
@@ -72,7 +68,7 @@ async function submit() {
   await api.unionPay.add(form)
 
   uni.reLaunch({
-    url: '/pages/invoiceList?status=1',
+    url: `/pages/invoiceList?type=unionPay&row=${encodeURIComponent(JSON.stringify(form))}`,
   })
 }
 </script>
@@ -86,17 +82,17 @@ async function submit() {
           <div i-tabler:text-scan-2 />
         </div>
       </div>
-      <div class="item flex justify-between px-3">
-        <picker mode="date" class="flex flex-1" :value="form.date" :start="startDate" :end="endDate" @change="change">
-          <div class="w-[calc(100vw-48rpx)] flex items-center justify-between">
-            <span class="lh-13">{{ form.date }}</span>
-            <div class="flex items-center">
-              <div i-material-symbols:arrow-forward-ios class="arrow opacity-20" />
-            </div>
-          </div>
-        </Picker>
-      </div>
-      <input v-model="form.car_num" type="text" class="item h-13 w-[calc(100vw-48rpx)] px-3" placeholder="请输入车牌号">
+      <!--      <div class="item flex justify-between px-3"> -->
+      <!--        <picker mode="date" class="flex flex-1" :value="form.date" :start="startDate" :end="endDate" @change="change"> -->
+      <!--          <div class="w-[calc(100vw-48rpx)] flex items-center justify-between"> -->
+      <!--            <span class="lh-13">{{ form.date }}</span> -->
+      <!--            <div class="flex items-center"> -->
+      <!--              <div i-material-symbols:arrow-forward-ios class="arrow opacity-20" /> -->
+      <!--            </div> -->
+      <!--          </div> -->
+      <!--        </Picker> -->
+      <!--      </div> -->
+      <input v-model="form.car_num" type="text" class="item h-13 w-[calc(100vw-48rpx)] px-3" placeholder="示例：蓝豫A12345(车牌颜色+车牌号)">
     </div>
 
     <div class="mx-3 mt-3 flex items-center text-14px text-blue" @click="alert">
@@ -105,7 +101,7 @@ async function submit() {
     </div>
 
     <button type="primary" class="mx-3 mb-10 mt-10" @click="submit">
-      确认
+      查询
     </button>
   </div>
   <TheModal v-if="show" v-model:visible="show" title="提示" :msg="msg" />

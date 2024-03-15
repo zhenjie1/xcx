@@ -4,11 +4,16 @@ import { cloneDeep } from 'lodash-es'
 import { api } from '~/api'
 import { invoiceState } from '~/assets/invoice'
 import { router } from '~/composables/useRouter'
-import { awaitWrap } from '~/assets/tools'
+import { awaitWrap, tryParse } from '~/assets/tools'
 
 const props = defineProps<{
   status?: string
+
+  type?: 'unionPay' | 'cash'
+  row?: string
 }>()
+
+const propsRow = computed(() => props.row ? (tryParse(decodeURIComponent(props.row)) || {}) : {})
 
 const tab = reactive({
   nav: [
@@ -49,10 +54,17 @@ async function initDataFn() {
     return console.log('到底了')
   }
   list.value = []
-  const [err, res] = await awaitWrap(api.invoice.list(tab.active, page.current, page.size))
+
+  let apiFetch = api.invoice.list(tab.active, page.current, page.size)
+  if (props.type) {
+    if (props.type === 'cash') apiFetch = api.invoice.cashList(propsRow.value?.car_num)
+    else if (props.type === 'unionPay') apiFetch = api.invoice.unionPayList(propsRow.value || {})
+  }
+  const [err, res] = await awaitWrap(apiFetch)
   uni.stopPullDownRefresh()
 
   if (err) return
+
   list.value = res!.data?.data || []
   page.current = res!.data.current_page
   page.lastPage = res!.data.last_page
@@ -150,7 +162,7 @@ async function rebillHandler(row: Data) {
 
 <template>
   <view class="h-full flex flex-col container">
-    <view class="topFixed">
+    <view v-if="!type" class="topFixed">
       <view v-for="(item, i) in tab.nav" :key="item.key" class="item" :class="{ active: item.key === tab.active, [`item-${i}`]: true }" @click="tab.handler(item)">
         {{ item.text }}
       </view>
@@ -167,7 +179,7 @@ async function rebillHandler(row: Data) {
         <!--        </p> -->
       </div>
     </view>
-    <view v-else class="flex-1 bg-#f5f5f5 pt-10">
+    <view v-else class="flex-1 overflow-y-auto bg-#f5f5f5" :class="[!type && 'pt-10']">
       <view v-for="(item, index) in list" :key="index" class="relative m-3 overflow-hidden rounded bg-white p-2" @click="checkHandler(item)">
         <view class="mb-2 flex items-center justify-between">
           <div class="rounded bg-$main px-6px py-2px text-14px text-white">

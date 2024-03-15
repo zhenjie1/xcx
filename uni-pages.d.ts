@@ -6,6 +6,7 @@
 interface NavigateToOptions {
   url: "pages/index" |
        "pages/bulletin" |
+       "pages/cash" |
        "pages/hi" |
        "pages/invoiceConfirm" |
        "pages/invoiceList" |

@@ -12,13 +12,25 @@ export default defineUniPages({
       },
     },
     {
-      path: 'pages/issue/index',
+      path: 'pages/lookUp',
       style: {
-        navigationBarTitleText: '常见问题',
+        navigationBarTitleText: '抬头发票',
       },
     },
     {
-      path: 'pages/issue/detail',
+      path: 'pages/cash',
+      style: {
+        navigationBarTitleText: '现金开票',
+      },
+    },
+    {
+      path: 'pages/unionPay',
+      style: {
+        navigationBarTitleText: '银联开票',
+      },
+    },
+    {
+      path: 'pages/issue/index',
       style: {
         navigationBarTitleText: '常见问题',
       },

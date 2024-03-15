@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { api } from '~/api'
 import icon1 from '../static/home1.png'
 import icon2 from '../static/home2.png'
 import icon3 from '../static/home3.png'
 import icon4 from '../static/home4.png'
-import TheModal from "~/components/TheModal.vue";
+import { api } from '~/api'
 
 const data = ref({
   banner: [] as Data[],
@@ -21,31 +20,34 @@ const list = reactive([{
   sub: '去开发票',
   link: '/pages/invoiceList',
   icon: icon1,
-  query: { status: '1' }
+  query: { status: '1' },
 }, {
   title: '我的发票',
   sub: '已开/未开发票',
   link: '/pages/invoiceList',
   icon: icon2,
-  query: { status: '2' }
+  query: { status: '2' },
 }, {
   title: '抬头发票',
   sub: '编辑信息',
   link: '/pages/lookUp',
   icon: icon3,
-},
-//   {
-//   title: '常见问题',
-//   sub: '答疑解惑',
-//   link: '/pages/issue/index',
-//   icon: icon4,
-// }
-])
+}, {
+  title: '现金开票',
+  sub: '现金开票',
+  link: '/pages/cash',
+  icon: icon4,
+}, {
+  title: '银联开票',
+  sub: '银联开票',
+  link: '/pages/unionPay',
+  icon: icon4,
+}])
 
 function handlerItem(row) {
   router.push({
     path: row.link,
-    query: row.query
+    query: row.query,
   })
 }
 </script>
@@ -58,7 +60,7 @@ function handlerItem(row) {
       <span>{{ firstNew.title }}</span>
     </view>
 
-    <view class="uni-margin-wrap rounded overflow-hidden">
+    <view class="uni-margin-wrap overflow-hidden rounded">
       <swiper class="swiper">
         <swiper-item v-for="(item, index) in data.banner" :key="index">
           <view class="swiper-item">
@@ -72,9 +74,9 @@ function handlerItem(row) {
       <view class="t1">
         发票服务
       </view>
-      <view class="t2 py-1" @click="router.push('/pages/unionPay')">
-        银联云闪付用户开票 >
-      </view>
+      <!--      <view class="t2 py-1" @click="router.push('/pages/unionPay')"> -->
+      <!--        银联云闪付用户开票 > -->
+      <!--      </view> -->
     </view>
 
     <view class="listBox">
@@ -87,8 +89,8 @@ function handlerItem(row) {
             {{ item.sub }}
           </view>
         </view>
-        <image class="icon" :src="item.icon"></image>
-<!--        <view class="icon" />-->
+        <image class="icon" :src="item.icon" />
+        <!--        <view class="icon" /> -->
       </view>
     </view>
 
@@ -98,7 +100,7 @@ function handlerItem(row) {
       </view>
     </view>
 
-    <view class="server" @click="router.push({path: '/pages/issue/index'})">
+    <view class="server" @click="router.push({ path: '/pages/issue/index' })">
       <view class="text">
         <view class="title">
           常见问题

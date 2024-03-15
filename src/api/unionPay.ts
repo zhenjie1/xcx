@@ -8,6 +8,5 @@
 
 import { axiosIns } from '~/api/index'
 
-export const add = (data: Data) => axiosIns.post('/invoice/yl_add', data, {
-    showMsg: true
+export const add = (data: Data) => axiosIns.post('/invoice/ylList', data, {
 })

@@ -16,6 +16,24 @@ export const list = (status: string, page = 1, size = 10) => axiosIns.get('/invo
   },
 })
 
+// 现金开票列表
+export const cashList = (car_num: string) => axiosIns.post('/invoice/cashList', { car_num }).then(res => ({
+  data: {
+    ...res,
+    current_page: 1,
+    last_page: 1,
+  },
+}))
+
+// 银联开票列表
+export const unionPayList = (data: Data) => axiosIns.post('/invoice/ylList', data).then(res => ({
+  data: {
+    data: [res.data],
+    current_page: 1,
+    last_page: 1,
+  },
+}))
+
 export const add = (data: Data) => axiosIns.post('/invoice/add', data, {
   showMsg: true,
 })

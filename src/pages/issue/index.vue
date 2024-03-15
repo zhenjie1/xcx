@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { api } from '~/api'
-import {formatRichText} from "~/assets/tools";
+import { formatRichText } from '~/assets/tools'
 
 const news = ref<Data[]>([])
 api.home.newList('question').then((res: Data) => {
@@ -22,7 +22,7 @@ async function handler(row: Data) {
 </script>
 
 <template>
-  <div class="pt-1px bg-#f5f5f5 min-h-full">
+  <div class="min-h-100vh bg-#f5f5f5 pt-1px">
     <div class="m-3 overflow-hidden rounded">
       <div v-for="(item, index) in news" :key="index" class="item bg-white px-3" @click="handler(item)">
         <div class="flex items-center justify-between lh-12">
