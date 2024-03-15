@@ -15,7 +15,7 @@ interface NavigateToOptions {
        "pages/merchant" |
        "pages/scanCode" |
        "pages/unionPay" |
-       "pages/webview" |
+       "pages/webView" |
        "pages/whatMerchant" |
        "pages/issue/detail" |
        "pages/issue/index" |

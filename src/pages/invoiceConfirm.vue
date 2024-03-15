@@ -26,7 +26,7 @@ async function submit() {
 </script>
 
 <template>
-  <div class="p-3 min-h-full bg-#f5f5f5">
+  <div class="min-h-100vh bg-#f5f5f5 p-3">
     <p class="text-14px op-50">
       邮箱
     </p>

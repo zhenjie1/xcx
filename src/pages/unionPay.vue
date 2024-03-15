@@ -74,7 +74,7 @@ async function submit() {
 </script>
 
 <template>
-  <div class="min-h-full bg-#f5f5f5">
+  <div class="min-h-100vh bg-#f5f5f5">
     <div class="bg-white">
       <div class="relative">
         <input v-model="form.order_no" type="text" class="item h-13 w-[calc(100vw-48rpx)] px-3" placeholder="请输入银联消费凭证号">

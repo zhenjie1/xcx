@@ -50,6 +50,12 @@ function handlerItem(row) {
     query: row.query,
   })
 }
+
+function jump(item: Data) {
+  if (item.route) {
+    router.push(`/pages/webView?url=${encodeURIComponent(item.route)}`)
+  }
+}
 </script>
 
 <!-- 本示例未包含完整css，获取外链css请参考上文，在hello uni-app项目中查看 -->
@@ -64,7 +70,7 @@ function handlerItem(row) {
       <swiper class="swiper">
         <swiper-item v-for="(item, index) in data.banner" :key="index">
           <view class="swiper-item">
-            <image :src="item.image" class="image" mode="aspectFill" />
+            <image :src="item.image" class="image" mode="aspectFill" @click="jump(item)" />
           </view>
         </swiper-item>
       </swiper>

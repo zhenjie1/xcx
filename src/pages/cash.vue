@@ -25,7 +25,7 @@ async function submit() {
 </script>
 
 <template>
-  <div class="min-h-full bg-#f5f5f5">
+  <div class="min-h-100vh bg-#f5f5f5">
     <div class="bg-white">
       <input v-model="form.car_num" type="text" class="item h-13 w-[calc(100vw-48rpx)] px-3" placeholder="示例：蓝豫A12345(车牌颜色+车牌号)">
     </div>
