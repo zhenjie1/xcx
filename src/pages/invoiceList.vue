@@ -159,12 +159,17 @@ async function download(row: Data) {
 
 // 再次开票
 async function rebillHandler(row: Data) {
-  row.rebillLoading = true
-  api.invoice.rebill(row.id).then(() => {
-    initDataFn()
-  }).finally(() => {
-    row.rebillLoading = false
-  })
+  // row.rebillLoading = true
+
+  invoiceState.invoices = cloneDeep([row])
+  invoiceState.invoiceType = 'new'
+  router.push('/pages/lookUp?type=check')
+
+  // api.invoice.rebill(row.id).then(() => {
+  //   initDataFn()
+  // }).finally(() => {
+  //   row.rebillLoading = false
+  // })
 }
 </script>
 

@@ -43,11 +43,11 @@ function verify() {
     if (!formData.name) message = '请输入姓名'
     else if (!formData.tax_number) message = '请输入税号'
     else if (taxLen < 13 || taxLen > 20) message = '税号格式不正确'
-    else if (!formData.phone) message = '请输入单位电话'
-    else if (phoneLen > 11) message = '电话格式不正确'
-    else if (!formData.address) message = '请输入单位地址'
-    else if (!formData.bank) message = '请输入开户银行'
-    else if (!formData.bank_num) message = '请输入银行账号'
+    // else if (!formData.phone) message = '请输入单位电话'
+    // else if (phoneLen > 11) message = '电话格式不正确'
+    // else if (!formData.address) message = '请输入单位地址'
+    // else if (!formData.bank) message = '请输入开户银行'
+    // else if (!formData.bank_num) message = '请输入银行账号'
   }
 
   return message

@@ -13,7 +13,14 @@ async function submit() {
     icon: 'none',
   })
 
-  if (invoiceState.invoiceType) {
+  if (invoiceState.invoiceType === 'new') {
+    await api.invoice.add2({
+      ids: invoices[0].id,
+      title_id: title_data.id,
+      email: email.value,
+    })
+  }
+  else if (invoiceState.invoiceType) {
     const pay_type = invoiceState.invoiceType === 'cash' ? '4' : '3'
     await api.invoice.cashAndUnionPayAdd({
       ids: invoices.map(v => v.id).join(','),
