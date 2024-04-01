@@ -13,11 +13,22 @@ async function submit() {
     icon: 'none',
   })
 
-  await api.invoice.add({
-    ids: invoices.map(v => v.id).join(','),
-    title_id: title_data.id,
-    email: email.value,
-  })
+  if (invoiceState.invoiceType) {
+    const pay_type = invoiceState.invoiceType === 'cash' ? '4' : '3'
+    await api.invoice.cashAndUnionPayAdd({
+      ids: invoices.map(v => v.id).join(','),
+      title_id: String(title_data.id),
+      email: email.value,
+      pay_type,
+    })
+  }
+  else {
+    await api.invoice.add({
+      ids: invoices.map(v => v.id).join(','),
+      title_id: title_data.id,
+      email: email.value,
+    })
+  }
 
   uni.reLaunch({
     url: '/pages/invoiceList?status=2',

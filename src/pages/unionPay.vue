@@ -67,7 +67,7 @@ async function submit() {
 
   await api.unionPay.add(form)
 
-  uni.reLaunch({
+  uni.navigateTo({
     url: `/pages/invoiceList?type=unionPay&row=${encodeURIComponent(JSON.stringify(form))}`,
   })
 }

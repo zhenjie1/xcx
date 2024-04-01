@@ -13,6 +13,12 @@ const props = defineProps<{
   row?: string
 }>()
 
+if (props.type) {
+  uni.setNavigationBarTitle({
+    title: props.type === 'cash' ? '现金开票' : '银联开票',
+  })
+}
+
 const propsRow = computed(() => props.row ? (tryParse(decodeURIComponent(props.row)) || {}) : {})
 
 const tab = reactive({
@@ -37,6 +43,8 @@ onShow(() => {
   page.current = 1
   page.lastPage = 2
   initDataFn()
+
+  invoiceState.invoiceType = props.type || ''
 })
 onPullDownRefresh(() => {
   page.current = 1
@@ -171,6 +179,9 @@ async function rebillHandler(row: Data) {
     <view v-if="list.length === 0" class="emitContainer flex-1 overflow-y-auto bg-#f5f5f5">
       <div class="box">
         <image src="../../static/empty.svg" style="width: 500rpx;height: 500rpx;margin:auto;display: block;margin-bottom: -40rpx;" mode="" />
+        <p class="p p1">
+          暂无数据
+        </p>
         <!--        <p class="p p1" @click="router.push('/pages/merchant')"> -->
         <!--          找不到可开票记录？点击试试用订单搜索 -->
         <!--        </p> -->

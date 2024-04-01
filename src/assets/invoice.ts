@@ -1,4 +1,6 @@
 export const invoiceState = reactive({
+  invoiceType: '',
+
   invoices: [] as Data[],
   title_data: {} as Data,
   email: '',

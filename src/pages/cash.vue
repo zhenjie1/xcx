@@ -18,7 +18,7 @@ async function submit() {
   // formData.append('car_num', form.car_num)
   await api.invoice.cashList(form.car_num)
 
-  uni.reLaunch({
+  uni.navigateTo({
     url: `/pages/invoiceList?type=cash&row=${encodeURIComponent(JSON.stringify(form))}`,
   })
 }

@@ -11,7 +11,7 @@ import { axiosAfter } from '~/api/after'
 
 export const axiosIns = axios.create({
   adapter,
-  baseURL: 'https://pay.pyzjhhdq.com/api/', // url = base url + request url
+  baseURL: 'https://pay.pyzjhhdq.com/api', // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000, // request timeout
 })
@@ -24,5 +24,5 @@ export const api = {
   home,
   lookUp,
   invoice,
-  unionPay
+  unionPay,
 }

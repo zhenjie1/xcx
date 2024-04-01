@@ -38,6 +38,10 @@ export const add = (data: Data) => axiosIns.post('/invoice/add', data, {
   showMsg: true,
 })
 
+export const cashAndUnionPayAdd = (data: Data) => axiosIns.post('/invoice/addOther', data, {
+  showMsg: true,
+})
+
 // export const view = () => axiosIns.
 
 export const download = (id: string) => axiosIns.post('/invoice/downUrl', {
