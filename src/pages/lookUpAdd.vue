@@ -53,12 +53,20 @@ function verify() {
   return message
 }
 
+const checkProtocol = ref(true)
 async function submit() {
   const message = verify()
   if (message) {
     uni.showToast({
       icon: 'none',
       title: message,
+    })
+    return
+  }
+  if (!checkProtocol.value) {
+    uni.showToast({
+      icon: 'none',
+      title: '请先阅读并同意 用户隐私协议',
     })
     return
   }
@@ -79,6 +87,10 @@ async function remove() {
   })
   await api.lookUp.remove(props.id!)
   router.back()
+}
+
+const gpProtocol = () => {
+  router.push('/pages/UserProtocol')
 }
 </script>
 
@@ -126,6 +138,12 @@ async function remove() {
           <input v-model="formData.name" type="text" placeholder="姓名（必填）" class="h-13 flex-1">
         </li>
       </ul>
+    </view>
+    <view class="ml-2 h-10 flex items-center gap-2">
+      <div v-if="!checkProtocol" i-ic:outline-radio-button-unchecked class="op-50" @click="checkProtocol = !checkProtocol" />
+      <div v-else i-material-symbols:check-circle class="text-$main" @click="checkProtocol = !checkProtocol" />
+      <span class="op-60" @click="checkProtocol = !checkProtocol">请阅读并同意</span>
+      <span class="text-$main" @click="gpProtocol">用户隐私协议</span>
     </view>
 
     <button type="primary" class="mx-4 mt-10" @click="submit">
