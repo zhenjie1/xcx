@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, defineProps, reactive, ref, watch } from 'vue'
-import { cloneDeep } from 'lodash-es'
-import { api } from '~/api'
-import { invoiceState } from '~/assets/invoice'
-import { router } from '~/composables/useRouter'
-import { awaitWrap, tryParse } from '~/assets/tools'
+import {computed, defineProps, reactive, ref, watch} from 'vue'
+import {cloneDeep} from 'lodash-es'
+import {api} from '~/api'
+import {invoiceState} from '~/assets/invoice'
+import {router} from '~/composables/useRouter'
+import {awaitWrap, tryParse} from '~/assets/tools'
 
 const props = defineProps<{
   status?: string
@@ -23,8 +23,8 @@ const propsRow = computed(() => props.row ? (tryParse(decodeURIComponent(props.r
 
 const tab = reactive({
   nav: [
-    { text: '未开票账单', key: '1' },
-    { text: '已开票账单', key: '2' },
+    {text: '未开票账单', key: '1'},
+    {text: '已开票账单', key: '2'},
   ],
   active: props.status || '1',
   handler: (row: Data) => tab.active = row.key,
@@ -176,14 +176,16 @@ async function rebillHandler(row: Data) {
 <template>
   <view class="h-full flex flex-col container">
     <view v-if="!type" class="topFixed">
-      <view v-for="(item, i) in tab.nav" :key="item.key" class="item" :class="{ active: item.key === tab.active, [`item-${i}`]: true }" @click="tab.handler(item)">
+      <view v-for="(item, i) in tab.nav" :key="item.key" class="item"
+            :class="{ active: item.key === tab.active, [`item-${i}`]: true }" @click="tab.handler(item)">
         {{ item.text }}
       </view>
     </view>
 
     <view v-if="list.length === 0" class="emitContainer flex-1 overflow-y-auto bg-#f5f5f5">
       <div class="box">
-        <image src="../../static/empty.svg" style="width: 500rpx;height: 500rpx;margin:auto;display: block;margin-bottom: -40rpx;" mode="" />
+        <image src="../../static/empty.svg"
+               style="width: 500rpx;height: 500rpx;margin:auto;display: block;margin-bottom: -40rpx;" mode=""/>
         <p class="p p1">
           暂无数据
         </p>
@@ -196,22 +198,20 @@ async function rebillHandler(row: Data) {
       </div>
     </view>
     <view v-else class="flex-1 overflow-y-auto bg-#f5f5f5" :class="[!type && 'pt-10']">
-      <view v-for="(item, index) in list" :key="index" class="relative m-3 overflow-hidden rounded bg-white p-2" @click="checkHandler(item)">
+      <view v-for="(item, index) in list" :key="index" class="relative m-3 overflow-hidden rounded bg-white p-2"
+            @click="checkHandler(item)">
         <view class="mb-2 flex items-center justify-between">
-          <div class="rounded bg-$main px-6px py-2px text-14px text-white">
-            {{ item.car_num }}
+          <div class="flex-inline justify-between items-center flex-1">
+            <div class="rounded bg-$main px-6px py-2px text-14px text-white">
+              {{ item.car_num }}
+            </div>
+            <div v-if="item.is_invoice == 4" class="bg-red/10 px-2 py-1 rounded text-3 text-red-500 ml-2">{{ item.err_msg }}</div>
           </div>
-          <div v-if="tab.active == '1'" class="radio text-$main">
-            <div v-if="!item.check" i-ic:sharp-radio-button-unchecked />
-            <div v-else i-material-symbols:check-circle />
+          <div v-if="tab.active == '1'" class="flex-shrink-0 radio text-$main">
+            <div v-if="!item.check" i-ic:sharp-radio-button-unchecked/>
+            <div v-else i-material-symbols:check-circle/>
           </div>
           <div v-else class="radio text-$main">
-            <div v-if="item.is_invoice == 4">
-              <view class="h-6 flex b b-$main rounded b-solid px-3 text-3 text-$main lh-6" @click="rebillHandler(item)">
-                <div v-if="item.rebillLoading" class="m-auto" i-line-md:loading-twotone-loop />
-                <span v-else class="m-auto">重新开票</span>
-              </view>
-            </div>
             <!--            123321 -->
           </div>
         </view>
@@ -231,12 +231,22 @@ async function rebillHandler(row: Data) {
             </p>
           </div>
         </view>
-        <view v-if="tab.active == '2' && item.is_invoice != 2" class="w-70% flex items-center justify-between text-3">
+        <view v-if="tab.active == '2' && item.is_invoice != 2" class="w-70% flex items-center gap-3 text-3">
           <div class="flex items-center gap-1 py-1 text-$main" @click="download(item)">
             <span>查看发票</span>
-            <div v-if="item.loading" i-line-md:loading-twotone-loop />
-            <div v-else i-material-symbols:arrow-circle-right-outline />
+            <div v-if="item.loading" i-line-md:loading-twotone-loop/>
+            <div v-else i-material-symbols:arrow-circle-right-outline/>
           </div>
+
+          <!--          <div>-->
+          <div v-if="item.is_invoice == 4">
+            <view class="h-6 flex gap-1 items-center px-3 text-3 text-$main lh-6" @click="rebillHandler(item)">
+              <span class="">重新开票</span>
+              <div v-if="item.rebillLoading" class="m-auto" i-line-md:loading-twotone-loop/>
+              <div v-else i-material-symbols:refresh-rounded></div>
+            </view>
+          </div>
+
           <!--          <div class="flex items-center text-$main gap-1 py-1" @click="download(item)"> -->
           <!--            <span>下载发票</span> -->
           <!--            <div v-if="item.loading" i-line-md:loading-twotone-loop></div> -->
@@ -244,15 +254,16 @@ async function rebillHandler(row: Data) {
           <!--          </div> -->
         </view>
         <view v-if="tab.active == '2'" class="absolute bottom--4 right--4 h-20 w-20 rotate--45 transform op-40">
-          <image v-if="item.is_invoice == 1" src="../static/p-no.png" class="h-full w-full" />
-          <image v-else-if="item.is_invoice == 2" src="../static/p-loading.png" class="h-full w-full" />
-          <image v-else-if="item.is_invoice == 3" src="../static/p-ok.png" class="h-full w-full" />
-          <image v-else-if="item.is_invoice == 4" src="../static/p-fail.png" class="h-full w-full" />
+          <image v-if="item.is_invoice == 1" src="../static/p-no.png" class="h-full w-full"/>
+          <image v-else-if="item.is_invoice == 2" src="../static/p-loading.png" class="h-full w-full"/>
+          <image v-else-if="item.is_invoice == 3" src="../static/p-ok.png" class="h-full w-full"/>
+          <image v-else-if="item.is_invoice == 4" src="../static/p-fail.png" class="h-full w-full"/>
         </view>
       </view>
     </view>
 
-    <div v-if="checkList.length > 0 && tab.active == '1'" class="flex items-center justify-between b-t b-t-$line b-t-solid bg-white px-3 py-2">
+    <div v-if="checkList.length > 0 && tab.active == '1'"
+         class="flex items-center justify-between b-t b-t-$line b-t-solid bg-white px-3 py-2">
       <p class="text-3 op50">
         每条记录将单独开具一张发票，<br>选择多条记录时不可合并开票
       </p>
@@ -264,22 +275,66 @@ async function rebillHandler(row: Data) {
 </template>
 
 <style lang="scss" scoped>
-.container{
-  background-color: rgba(0,0,0,.03);
+.container {
+  background-color: rgba(0, 0, 0, .03);
   height: 100vh;
 
-  .emitContainer{height: 90vh;display: flex;
-    .box{margin: auto;}
-    .p{color: var(--main);margin-bottom: 40rpx;text-align: center;font-size: 24rpx;}
+  .emitContainer {
+    height: 90vh;
+    display: flex;
+
+    .box {
+      margin: auto;
+    }
+
+    .p {
+      color: var(--main);
+      margin-bottom: 40rpx;
+      text-align: center;
+      font-size: 24rpx;
+    }
   }
 }
-.topFixed{display: flex;background-color: white;position: fixed;top: 0;left: 0;width: 100%;z-index: 10;border-bottom: 1px solid #e6e6e6;
-  .item{flex: 1;text-align: center;line-height: 40rpx;padding: 20rpx 0;color: #999;}
-  .item-1{position: relative;
-    &:before{content: '';display: block;border-left: 1px solid #e6e6e6;width: 1rpx;height: 50%;position: absolute;left:0;top:50%;transform: translateY(-50%);}
+
+.topFixed {
+  display: flex;
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  border-bottom: 1px solid #e6e6e6;
+
+  .item {
+    flex: 1;
+    text-align: center;
+    line-height: 40rpx;
+    padding: 20rpx 0;
+    color: #999;
   }
-  .item.active{color: var(--main);}
+
+  .item-1 {
+    position: relative;
+
+    &:before {
+      content: '';
+      display: block;
+      border-left: 1px solid #e6e6e6;
+      width: 1rpx;
+      height: 50%;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  .item.active {
+    color: var(--main);
+  }
 }
-.radio{
+
+.radio {
 }
 </style>

@@ -8,10 +8,10 @@ const props = defineProps<{
 
 const type = reactive({
   type: [
-    { label: '公司', value: 'company' },
+    { label: '企业', value: 'company' },
     { label: '个人', value: 'personal' },
   ],
-  value: 'personal',
+  value: 'company',
   handler: (e: any) => {
     type.value = e.detail.value
   },

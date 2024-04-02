@@ -9,7 +9,7 @@ const numbers = ['一', '二', '三', '四', '五', '六', '七']
 const email = ref('')
 async function submit() {
   if (!email.value) return uni.showToast({
-    title: '请输入邮箱地址',
+    title: '请输入邮箱或手机号',
     icon: 'none',
   })
 
@@ -46,9 +46,9 @@ async function submit() {
 <template>
   <div class="min-h-100vh bg-#f5f5f5 p-3">
     <p class="text-14px op-50">
-      邮箱
+      邮箱或手机号
     </p>
-    <input v-model="email" type="text" placeholder="请输入邮箱地址" class="mt-1 h-12 rounded bg-white px-3">
+    <input v-model="email" type="text" placeholder="请输入邮箱或手机号" class="mt-1 h-12 rounded bg-white px-3">
 
     <p class="mt-3 text-14px op-50">
       发票抬头
